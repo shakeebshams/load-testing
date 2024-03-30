@@ -27,6 +27,15 @@ class HTTPLoadTest:
         self.latencies = []
         self.errors = 0
 
+        self.average_latency = None
+        self.total_time = None
+        self.percentile_50th = None
+        self.percentile_75th = None
+        self.percentile_95th = None
+        self.percentile_99th = None
+        self.percentiles = {}
+
+
     def run_test(self):
         """
         Runs the load test and prints results.
@@ -35,16 +44,19 @@ class HTTPLoadTest:
         self._send_requests()
         end_time = time.time()
 
-        total_time = end_time - start_time
+        self.total_time = end_time - start_time
+        self.average_latency = self.get_average_latency()
+
         percentiles = [50, 75, 95, 99]
         latency_percentiles = self._calculate_percentiles(percentiles)
         print(f"Total Requests: {self.num_requests}")
         print(f"Concurrency: {self.concurrency}")
         print(f"Errors: {self.errors}")
-        print(f"Total Time: {total_time:.4f} seconds")
-        print(f"Average Latency: {self.get_average_latency():.4f} seconds")
+        print(f"Total Time: {self.total_time:.4f} seconds")
+        print(f"Average Latency: {self.average_latency:.4f} seconds")
         print(f"Percentiles:")
         for percentile, latency in zip(percentiles, latency_percentiles):
+            self.percentiles["percentile_" + str(percentile) + "th"] = latency
             print(f"  - {percentile}%: {latency:.4f} seconds")
 
     def _send_requests(self):
@@ -97,7 +109,7 @@ class HTTPLoadTest:
         return np.percentile(self.latencies, percentiles)
 
 
-# Example usage
+# Local testing
 if __name__ == "__main__":
     test = HTTPLoadTest(url="https://www.google.com", num_requests=100, concurrency=4, request_type="GET")
     test.run_test()

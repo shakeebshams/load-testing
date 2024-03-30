@@ -68,3 +68,10 @@ Sample Response
     "total_time": 13.496866941452026
 }
 ```
+
+### Future improvements
+ - error handling around invalid requests with accurate HTTP response codes. For this project any errors are returned back as 500 and cloud run re-instantiates the server.
+ - authenticated endpoint access.
+ - endpoint DDOS protection by Cloud Armor firewall rules.
+ - requests saved to DB and then visualized
+ - Deployment on compute engine VM with multi-region instances connected with a global load balancer. With cloud run, instances can only be deployed in a single region.

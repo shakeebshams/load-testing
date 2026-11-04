@@ -19,6 +19,11 @@ class HTTPLoadTest:
             request_type (str, optional): The type of HTTP request to send (GET, POST, etc.). Defaults to "GET".
             data (dict, optional): Data to send with a POST request. Defaults to None.
         """
+        if not isinstance(num_requests, int) or isinstance(num_requests, bool) or num_requests <= 0:
+            raise ValueError("num_requests must be a positive integer")
+        if not isinstance(concurrency, int) or isinstance(concurrency, bool) or concurrency <= 0:
+            raise ValueError("concurrency must be a positive integer")
+
         self.url = url
         self.num_requests = num_requests
         self.concurrency = concurrency

@@ -106,6 +106,13 @@ class HTTPLoadTest:
         """
         Calculates the percentiles of the recorded latencies.
         """
+        if not self.latencies:
+            if isinstance(percentiles, (list, tuple, np.ndarray)):
+                return [0.0] * len(percentiles)
+            try:
+                return [0.0] * len(percentiles)
+            except TypeError:
+                return 0.0
         return np.percentile(self.latencies, percentiles)
 
 

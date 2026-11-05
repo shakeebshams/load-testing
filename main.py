@@ -4,6 +4,10 @@ from HTTPLoadTest import HTTPLoadTest
 
 app = Flask(__name__)
 
+@app.route("/healthz", methods=["GET"])
+def healthz():
+    return jsonify({"status": "ok"}), 200
+
 @app.route("/run_load_test", methods=["POST"])
 def run_load_test():
     data = request.get_json()
